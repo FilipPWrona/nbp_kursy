@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kursy Walut NBP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .info {
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: #6c757d;
+        }
+    </style>
+    <script>
+        // Auto-odświeżanie strony co 60 sekund
+        setTimeout(function() {
+            location.reload();
+        }, 60000);
+    </script>
+</head>
+<body>
+    <h1>Kursy Walut NBP</h1>
+    
+    <div class="info">
+        {% if ostatnia_aktualizacja %}
+            Ostatnia aktualizacja: {{ ostatnia_aktualizacja }}
+        {% else %}
+            Nie pobrano jeszcze danych o kursach walut.
+        {% endif %}
+        
+        {% if kursy and kursy.data_publikacji %}
+            <br>Data publikacji NBP: {{ kursy.data_publikacji }}
+        {% endif %}
+    </div>
+    
+    {% if kursy and kursy.waluty %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Kod waluty</th>
+                    <th>Nazwa waluty</th>
+                    <th>Kurs (PLN)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for waluta in kursy.waluty %}
+                <tr>
+                    <td>{{ waluta.code }}</td>
+                    <td>{{ waluta.currency }}</td>
+                    <td>{{ waluta.mid }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty-state">
+            <p>Brak danych o kursach walut.</p>
+            <p>Spróbuj odświeżyć stronę za chwilę.</p>
+        </div>
+    {% endif %}
+</body>
+</html> 
